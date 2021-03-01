@@ -1,5 +1,7 @@
 #include "gdt.h"
 
+extern void reloadSegments();
+
 void encodeGDT(uint8_t* gdtEntry, struct GDT source) {
     if ((source.limit > 65536) && ((source.limit & 0xFFF) == 0xFFF)) {
         // Set the GDT to use paging
@@ -33,4 +35,33 @@ void encodeGDT(uint8_t* gdtEntry, struct GDT source) {
     // Bits 40-47 set the access byte, which is documented at https://wiki.osdev.org/GDT,
     // where most of the ideas for this function are taken from shamelessly
     gdtEntry[5] = source.type;
+}
+
+void initializeGDT() {
+    struct GDT nullEntry;
+    nullEntry.limit = 0;
+    nullEntry.base  = 0;
+    nullEntry.type  = 0;
+
+    struct GDT codeSection;
+    codeSection.limit = 0xFFFFFFFF;
+    codeSection.base  = 0;
+    codeSection.type  = 0x9A;
+
+    struct GDT dataSection;
+    dataSection.limit = 0xFFFFFFFF;
+    dataSection.base  = 0;
+    dataSection.type  = 0x92;
+
+    encodeGDT(gdt_entries     , nullEntry  );
+    encodeGDT(gdt_entries + 8 , codeSection);
+    encodeGDT(gdt_entries + 16, dataSection);
+
+    struct GDT_ptr gdt_ptr;
+    gdt_ptr.limit = 8*3;
+    gdt_ptr.base  = (uint32_t)(&gdt_entries);
+
+    asm("lgdt (%0)" : :"r" ((uint8_t*)(&gdt_ptr)));
+
+    reloadSegments();
 }

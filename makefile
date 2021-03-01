@@ -3,7 +3,7 @@ CXX     = i386-elf-gcc
 CFLAGS  = -std=gnu99 -ffreestanding -O2 -Wall -Wextra -nostdlib -Iinclude
 ASM     = nasm
 
-OBJECTS = gdt.o boot.o print.o kernel.o
+OBJECTS = boot.o gdt.o isr.o idt.o port.o print.o kernel.o
 
 %.o : src/%.c
 	$(CXX) $(CFLAGS) -o $@ -c $<

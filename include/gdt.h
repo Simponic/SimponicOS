@@ -14,4 +14,8 @@ struct GDT_ptr {
     uint32_t base;
 } __attribute((packed));
 
+uint8_t gdt_entries[8 * 3]; // (8 bytes per entry) * (num entries) 
+
+void encodeGDT(uint8_t* gdtEntry, struct GDT source);
+void initializeGDT();
 #endif //GDT_H
