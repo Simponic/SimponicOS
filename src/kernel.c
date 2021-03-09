@@ -15,7 +15,6 @@ void kernel_main(void) {
     initializeIDT();
     printToMonitor("Hello\n");
     printIntToMonitor(10, 10);
-    asm ("int $0x3");
-    asm ("int $0x4");
+    asm("int $0x01");
 }
 
