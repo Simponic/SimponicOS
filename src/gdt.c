@@ -1,4 +1,5 @@
 #include "gdt.h"
+#include "print.h"
 
 extern void reloadSegments();
 
@@ -10,6 +11,10 @@ void encodeGDT(uint8_t* gdtEntry, struct GDT source) {
         // Granularity: 1 (use paging with 4KiB segments)
         // Size: 1 (32 bit protected mode)
         gdtEntry[6] = 0xC0;
+    }
+    else if (source.limit == 0) {
+        // Don't set any granularity for null entry
+        gdtEntry[6] = 0;
     }
     else {
         // Granularity: 0 (1 byte segments)
