@@ -1,9 +1,7 @@
 ##SimponicOS
 
-This is a 32-bit protected mode OS that I am trying to write from scratch.
-It is mostly a test of my knowledge of C and computer hardware in general.
-I hope it becomes something better in the future. Right now I'm having
-difficulty with interrupts.
+This is a 32-bit protected mode operating system that I am scrapping together.
+Hopefully it turns into something cool.
 
 You must have the GCC toolchain compiled for i386 installed on your machine, setup
 with cross-compilation. You can find directions on how to do this on the OSDev
